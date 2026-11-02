@@ -7,7 +7,29 @@
 ![PowerShell](https://img.shields.io/badge/PowerShell-scripts-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-conteneurs-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 
-Auditer un environnement IAM volontairement désordonné, formuler des constats priorisés comme dans une mission de conseil, mettre en place un compte de service au moindre privilège, protéger une action sensible par le MFA, puis écrire une politique minimale validée par des tests. Le dépôt montre le raisonnement et les limites autant que les commandes.
+![Vue d'ensemble : audit, compte de service, MFA et politique minimale](docs/images/architecture-audit-iam.png)
+
+## Description
+
+Ce projet reproduit une mission d'audit des accès sur un environnement cloud AWS émulé en local (LocalStack, avec application réelle des permissions). Il suit la chaîne complète d'un audit : repérer des configurations excessives, les qualifier comme un consultant (preuve, risque métier, gravité, effort), les corriger en appliquant le moindre privilège, puis prouver chaque correction par des tests autorisés et des tests refusés. Les corrections couvrent un compte de service qui déploie par rôle temporaire, une règle de refus conditionnel par MFA et une politique minimale pour une analyste.
+
+Tout se rejoue par scripts PowerShell, sans compte AWS ni coût. Le dépôt montre le raisonnement et les limites autant que les commandes.
+
+## Problématique
+
+Les incidents d'accès dans le cloud viennent très souvent de configurations trop permissives côté client plutôt que d'une faille du fournisseur : administrateurs superflus, rôles ouverts à tous, clés oubliées, droits larges accordés « pour que ça marche ». Ce projet répond à trois questions concrètes :
+
+- Comment repérer ces écarts de façon méthodique et reproductible, et que ne voit pas un script d'audit ?
+- Comment les prioriser et les présenter à un client qui n'est pas technicien ?
+- Comment prouver qu'une correction respecte le moindre privilège, sans ouvrir de droits par erreur ?
+
+## Objectifs
+
+1. **Auditer :** contrôler six indicateurs de configuration excessive (administrateurs, absence de MFA, clés multiples, absence de groupe, rôles à confiance ouverte, politiques avec `Action: *`) et identifier ce que le script ne détecte pas.
+2. **Qualifier :** produire des constats avec preuve, risque métier, gravité, recommandation et effort.
+3. **Corriger :** remplacer un droit direct par un rôle temporaire, protéger une action sensible par une condition MFA, écrire une politique qui n'accorde que le strict nécessaire.
+4. **Prouver :** valider chaque correction par des tests de réussite et de refus (10 tests sur 10 pour la politique minimale).
+5. **Restituer :** livrer une synthèse compréhensible par un client, avec les limites et les recommandations priorisées.
 
 ## Synthèse de restitution
 
@@ -185,7 +207,7 @@ Feuille de route indicative : sous 30 jours, les actions P1 à effort faible ; s
 ├── README.md
 ├── policies/      cinq politiques JSON
 ├── scripts/       cinq scripts PowerShell numérotés
-└── docs/images/   captures numérotées
+└── docs/images/   captures et schéma d'architecture
 ```
 
 ## Autres projets
