@@ -1,0 +1,6 @@
+*.pem
+*seed*.txt
+*token*
+.aws/
+credentials
+*.log

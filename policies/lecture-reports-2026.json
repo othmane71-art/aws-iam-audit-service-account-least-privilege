@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListerReports2026",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::iam-defi-sensor-1",
+      "Condition": { "StringLike": { "s3:prefix": ["reports/2026/*"] } }
+    },
+    {
+      "Sid": "LireReports2026",
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::iam-defi-sensor-1/reports/2026/*"
+    }
+  ]
+}
